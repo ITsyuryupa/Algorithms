@@ -1,6 +1,4 @@
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Hashtable;
+import java.util.*;
 
 public class LeetcodePatternsEasy {
 
@@ -40,7 +38,7 @@ public class LeetcodePatternsEasy {
         return false;
     }
 
-    public int missingNumberSet(int[] nums) {
+    public static int missingNumberSet(int[] nums) {
         int n = nums.length;
         HashSet<Integer> set = new HashSet<>();
         for (int num : nums){
@@ -54,7 +52,7 @@ public class LeetcodePatternsEasy {
 
         return -1;
     }
-    public int missingNumberArray(int[] nums) {
+    public static int missingNumberArray(int[] nums) {
         int n = nums.length;
         Arrays.sort(nums);
         for (int i = 0; i < n; i++){
@@ -66,7 +64,7 @@ public class LeetcodePatternsEasy {
         return n;
     }
 
-    public int missingNumberSum(int[] nums) {
+    public static int missingNumberSum(int[] nums) {
         int n = nums.length;
         int sum = 0;
 
@@ -76,7 +74,49 @@ public class LeetcodePatternsEasy {
         return (1+n)*n/2 - sum;
     }
 
-    public int missingNumberSum2(int[] nums) {
+    public static int missingNumberSum2(int[] nums) {
             return (1+nums.length)*nums.length/2 - Arrays.stream(nums).sum();
+    }
+
+    public static List<Integer> findDisappearedNumbersSet(int[] nums) {
+        int n = nums.length;
+        Set<Integer> set = new HashSet<>();
+        List<Integer> ans = new ArrayList<>();
+
+        for (int i = 0; i < n; i++){
+            set.add(nums[i]);
+        }
+
+        for (int i = 1; i <= n; i++){
+            if(!set.contains(i)){
+                ans.add(i);
+            }
+        }
+        return ans;
+    }
+
+    public static List<Integer> findDisappearedNumbersCyclicSort(int[] nums) {
+        int n = nums.length;
+        List<Integer> ans = new ArrayList<>();
+
+        int i = 0;
+        while(i < n){
+            int pos = nums[i] - 1;
+            if (nums[i] != nums[pos]) {
+                //equal nums[i], nums[pos] = nums[pos], nums[i]
+                nums[i] = nums[pos] + nums[i];
+                nums[pos] = nums[i] - nums[pos];
+                nums[i] = nums[i] - nums[pos];
+            } else {
+                i += 1;
+            }
+        }
+
+        for (i = 1; i <= n; i++){
+            if (nums[i - 1] != i) {
+                ans.add(i);
+            }
+        }
+        return ans;
     }
 }
